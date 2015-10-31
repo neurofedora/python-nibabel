@@ -122,8 +122,8 @@ pushd %{buildroot}%{_bindir}
 popd
 
 %check
-nosetests-%{python2_version} -v || :
-nosetests-%{python3_version} -v || :
+nosetests-%{python2_version} -v
+nosetests-%{python3_version} -v
 
 %files -n python2-%{modname}
 %license COPYING
