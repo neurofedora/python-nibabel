@@ -5,7 +5,7 @@ Version:        2.0.1
 Release:        1%{?dist}
 Summary:        Python package to access a cacophony of neuro-imaging file formats
 
-License:        MIT
+License:        MIT and PDDL-1.0
 URL:            http://nipy.org/nibabel/
 Source0:        https://github.com/nipy/nibabel/archive/%{version}/%{modname}-%{version}.tar.gz
 # https://github.com/nipy/nibabel/pull/358
