@@ -1,15 +1,13 @@
 %global modname nibabel
 
 Name:           python-%{modname}
-Version:        2.0.1
+Version:        2.0.2
 Release:        1%{?dist}
 Summary:        Python package to access a cacophony of neuro-imaging file formats
 
 License:        MIT and PDDL-1.0
 URL:            http://nipy.org/nibabel/
 Source0:        https://github.com/nipy/nibabel/archive/%{version}/%{modname}-%{version}.tar.gz
-# https://github.com/nipy/nibabel/pull/358
-Patch0:         0001-BF-Set-strided_scalar-as-not-writeable.patch
 BuildRequires:  git-core
 BuildArch:      noarch
 
@@ -103,20 +101,20 @@ sed -i -e "/externals/d" setup.py
 pushd %{buildroot}%{_bindir}
   for mod in parrec2nii nib-ls nib-dicomfs nib-nifti-dx
   do
-    mv $mod python2-$mod
+    mv $mod python3-$mod
 
-    sed -i '1s|^.*$|#!/usr/bin/env %{__python2}|' python2-$mod
-    for i in $mod $mod-2 $mod-%{python2_version}
-    do
-      ln -s python2-$mod $i
-    done
-
-    cp python2-$mod python3-$mod
     sed -i '1s|^.*$|#!/usr/bin/env %{__python3}|' python3-$mod
-
-    for i in $mod-3 $mod-%{python3_version}
+    for i in $mod $mod-3 $mod-%{python3_version}
     do
       ln -s python3-$mod $i
+    done
+
+    cp python3-$mod python2-$mod
+    sed -i '1s|^.*$|#!/usr/bin/env %{__python2}|' python2-$mod
+
+    for i in $mod-2 $mod-%{python2_version}
+    do
+      ln -s python2-$mod $i
     done
   done
 popd
@@ -128,19 +126,15 @@ nosetests-%{python3_version} -v
 %files -n python2-%{modname}
 %license COPYING
 %{_bindir}/python2-parrec2nii
-%{_bindir}/parrec2nii
 %{_bindir}/parrec2nii-2
 %{_bindir}/parrec2nii-%{python2_version}
 %{_bindir}/python2-nib-ls
-%{_bindir}/nib-ls
 %{_bindir}/nib-ls-2
 %{_bindir}/nib-ls-%{python2_version}
 %{_bindir}/python2-nib-dicomfs
-%{_bindir}/nib-dicomfs
 %{_bindir}/nib-dicomfs-2
 %{_bindir}/nib-dicomfs-%{python2_version}
 %{_bindir}/python2-nib-nifti-dx
-%{_bindir}/nib-nifti-dx
 %{_bindir}/nib-nifti-dx-2
 %{_bindir}/nib-nifti-dx-%{python2_version}
 %{python2_sitelib}/%{modname}*
@@ -149,20 +143,28 @@ nosetests-%{python3_version} -v
 %files -n python3-%{modname}
 %license COPYING
 %{_bindir}/python3-parrec2nii
+%{_bindir}/parrec2nii
 %{_bindir}/parrec2nii-3
 %{_bindir}/parrec2nii-%{python3_version}
 %{_bindir}/python3-nib-ls
+%{_bindir}/nib-ls
 %{_bindir}/nib-ls-3
 %{_bindir}/nib-ls-%{python3_version}
 %{_bindir}/python3-nib-dicomfs
+%{_bindir}/nib-dicomfs
 %{_bindir}/nib-dicomfs-3
 %{_bindir}/nib-dicomfs-%{python3_version}
 %{_bindir}/python3-nib-nifti-dx
+%{_bindir}/nib-nifti-dx
 %{_bindir}/nib-nifti-dx-3
 %{_bindir}/nib-nifti-dx-%{python3_version}
 %{python3_sitelib}/%{modname}*
 %{python3_sitelib}/nisext/
 
 %changelog
+* Mon Nov 23 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 2.0.2-1
+- Update to 2.0.2
+- unversioned bir to python3
+
 * Sat Oct 31 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 2.0.1-1
 - Initial package
