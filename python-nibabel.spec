@@ -84,8 +84,9 @@ Python 3 version.
 rm -vrf %{modname}/externals/
 # Hard fix for bundled libs
 find -type f -name '*.py' -exec sed -i \
-  -e "s/from \.*[ ]*externals.six/from six/"        \
-  -e "s/from \.*externals.netcdf/from scipy.io.netcdf/"  \
+  -e "s/from nibabel.externals.six/from six/"           \
+  -e "s/from \.*[ ]*externals.six/from six/"            \
+  -e "s/from \.*externals.netcdf/from scipy.io.netcdf/" \
   {} ';'
 sed -i -e "/externals/d" setup.py
 
